@@ -1,0 +1,20 @@
+.catBox {
+    background-color: #e2efff;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.cattributes {
+    padding: 25px;
+    background-color: #ededed;
+    border-radius: 10px;
+}
+
+.dnaDiv {
+    position: absolute;
+    left: -95px;
+    bottom: 50%;
+    transform: rotate(-90deg);
+}

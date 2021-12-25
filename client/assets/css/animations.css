@@ -1,0 +1,94 @@
+.moveHead {
+    animation: moveHead 3s infinite;
+}
+
+.moveLeftEar {
+    animation: moveLeftEar 3s infinite;
+}
+
+.moveRightEar {
+    animation: moveRightEar 3s infinite;
+}
+
+.tapLeftFeet {
+    animation: tapLeftFeet 3s infinite;
+}
+
+.tapRightFeet {
+    animation: tapRightFeet 2s infinite;
+}
+
+@keyframes moveHead {
+    0% {
+        transform: rotate(0deg);
+    }
+    30% {
+        transform: rotate(5deg);
+    }
+    60% {
+        transform: rotate(-5deg);
+    }
+    100% {
+        transform: rotate(0deg);
+    }
+}
+
+@keyframes moveLeftEar {
+    0% {
+        transform: rotate(0deg);
+    }
+    30% {
+        transform: rotate(7deg);
+    }
+    60% {
+        transform: rotate(-7deg);
+    }
+    100% {
+        transform: rotate(0deg);
+    }
+}
+
+@keyframes moveRightEar {
+    0% {
+        transform: rotate(0deg);
+    }
+    30% {
+        transform: rotate(-7deg);
+    }
+    60% {
+        transform: rotate(7deg);
+    }
+    100% {
+        transform: rotate(0deg);
+    }
+}
+
+@keyframes tapLeftFeet {
+    0% {
+        transform: rotate(0deg);
+        transform-origin: 100% 100%;
+    }
+    50% {
+        transform: rotate(8deg);
+        transform-origin: 100% 100%;
+    }
+    100% {
+        transform: rotate(0deg);
+        transform-origin: 100% 100%;
+    }
+}
+
+@keyframes tapRightFeet {
+    0% {
+        transform: rotate(0deg);
+        transform-origin: 0% 100%;
+    }
+    50% {
+        transform: rotate(-8deg);
+        transform-origin: 0% 100%;
+    }
+    100% {
+        transform: rotate(0deg);
+        transform-origin: 0% 100%;
+    }
+}
