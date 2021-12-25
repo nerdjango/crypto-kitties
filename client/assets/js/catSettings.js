@@ -130,3 +130,14 @@ $('#random-kitty').click(() => {
 $('#default-kitty').click(() => {
     renderCat(defaultDNA)
 })
+
+$('#new-kitty').click(() => {
+    var catDNA = getDna()
+    instance.methods.createCatGen0(catDNA).send({}, function(err, txHash) {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log(txHash);
+        }
+    })
+})

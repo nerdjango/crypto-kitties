@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <script src="assets/bootstrap/js/popper.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+    <script type="text/javascript" src="abi.js"></script>
 
     <link rel="stylesheet" href="assets/css/mystyle.css">
     <link rel="stylesheet" href="assets/css/cats.css">
@@ -150,9 +152,11 @@
                             </div>
                         </div>
                     </div>
-                    <button type="button" id="random-kitty" class="btn btn-primary btn-lg btn-block">Create Random Kitty</button>
-                    <button type="button" id="default-kitty" class="btn btn-secondary btn-lg btn-block">Generate Default Kitty</button>
-                    <button type="button" id="new-kitty" class="btn btn-success btn-lg btn-block">Create New Kitty</button>
+                    <button type="button" id="random-kitty" class="btn btn-primary btn-lg btn-block">Create Random Kitten</button>
+                    <button type="button" id="default-kitty" class="btn btn-secondary btn-lg btn-block">Default Kitten</button>
+                    <button type="button" id="new-kitty" class="btn btn-success btn-lg btn-block">Mint Kitten</button>
+                    <br>
+                    <div class="alert alert-success" role="alert" id="kittenCreation" style="display: none;"></div>
                 </div>
 
             </div>
@@ -170,6 +174,7 @@
     </footer>
 
 </body>
+<script type="text/javascript" src="index.js"></script>
 <script src="assets/js/colors.js"></script>
 <script src="assets/js/catSettings.js"></script>
 <script src="assets/js/catFactory.js"></script>
