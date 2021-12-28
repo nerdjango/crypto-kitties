@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Academy kitties </title>
+    <title>Nerdjango kitties </title>
     <script type="text/javascript" src="assets/js/jquery-3.4.1.js"></script>
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <script src="assets/bootstrap/js/popper.js"></script>
@@ -21,6 +21,29 @@
 </head>
 
 <body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="home.html">Nerdjango-Kitties</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="home.html">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="catalogue.html">Catalogue</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="index.html">K-Factory</a>
+                </li>
+            </ul>
+            <form class="form-inline my-2 my-lg-0">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Start DApp</button>
+            </form>
+        </div>
+    </nav>
     <div class="container p-5" style="margin-top: 0vh;margin-bottom: 10vh;">
         <div align="center">
             <h1 class="c-white">Kitties-Factory</h1>
@@ -138,12 +161,12 @@
                                     <input type="range" min="1" max="7" class="form-control-range" id="bodyPattern">
                                 </div>
                                 <div class="form-group">
-                                    <label for="formControlRange"><b>Stomach Pattern Color &nbsp</b><span class="badge badge-dark" id="decoration1Color"></span></label>
-                                    <input type="range" min="1" max="98" class="form-control-range" id="stomachPattern">
+                                    <label for="formControlRange"><b>Stomach Pattern Color &nbsp</b><span class="badge badge-dark" id="decoration2Color"></span></label>
+                                    <input type="range" min="10" max="98" class="form-control-range" id="stomachPattern">
                                 </div>
                                 <div class="form-group">
-                                    <label for="formControlRange"><b>Face Pattern Color &nbsp</b><span class="badge badge-dark" id="decoration2Color"></span></label>
-                                    <input type="range" min="1" max="98" class="form-control-range" id="facePattern">
+                                    <label for="formControlRange"><b>Face Pattern Color &nbsp</b><span class="badge badge-dark" id="decoration1Color"></span></label>
+                                    <input type="range" min="10" max="98" class="form-control-range" id="facePattern">
                                 </div>
                                 <div class="form-group">
                                     <label for="formControlRange"><b>Animations &nbsp</b><span class="badge badge-dark" id="animationName"></span></label>
@@ -152,7 +175,7 @@
                             </div>
                         </div>
                     </div>
-                    <button type="button" id="random-kitty" class="btn btn-primary btn-lg btn-block">Create Random Kitten</button>
+                    <button type="button" id="random-kitty" class="btn btn-primary btn-lg btn-block">Generate Random Kitten</button>
                     <button type="button" id="default-kitty" class="btn btn-secondary btn-lg btn-block">Default Kitten</button>
                     <button type="button" id="new-kitty" class="btn btn-success btn-lg btn-block">Mint Kitten</button>
                     <br>

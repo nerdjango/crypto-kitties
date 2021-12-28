@@ -9,7 +9,7 @@ var defaultDNA = {
     "eyesShape": 1,
     "decorationPattern": 1,
     "decorationMidcolor": 50,
-    "decorationSidescolor": 50,
+    "decorationSidescolor": 51,
     "animation": 1,
     "lastNum": 1
 }
@@ -60,10 +60,10 @@ function renderCat(dna) {
     $('#eyeshape').val(dna.eyesShape)
     decorationVariation(dna.decorationPattern)
     $('#bodyPattern').val(dna.decorationPattern)
-    pattern1Color(colors[dna.decorationMidcolor], dna.decorationMidcolor)
-    $('#stomachPattern').val(dna.decorationMidcolor)
-    pattern2Color(colors[dna.decorationSidescolor], dna.decorationSidescolor)
+    pattern1Color(colors[dna.decorationSidescolor], dna.decorationSidescolor)
     $('#facePattern').val(dna.decorationSidescolor)
+    pattern2Color(colors[dna.decorationMidcolor], dna.decorationMidcolor)
+    $('#stomachPattern').val(dna.decorationMidcolor)
     animationVariation(dna.animation)
     $('#animation').val(dna.animation)
 }
@@ -95,11 +95,11 @@ $('#bodyPattern').change(() => {
 })
 $('#stomachPattern').change(() => {
     var colorVal = $('#stomachPattern').val()
-    pattern1Color(colors[colorVal], colorVal)
+    pattern2Color(colors[colorVal], colorVal)
 })
 $('#facePattern').change(() => {
     var colorVal = $('#facePattern').val()
-    pattern2Color(colors[colorVal], colorVal)
+    pattern1Color(colors[colorVal], colorVal)
 })
 $('#animation').change(() => {
     var animationVal = parseInt($('#animation').val())

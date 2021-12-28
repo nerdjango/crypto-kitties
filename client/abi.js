@@ -563,5 +563,38 @@ var abi = [{
         "stateMutability": "view",
         "type": "function",
         "constant": true
+    },
+    {
+        "inputs": [],
+        "name": "getCatByOwner",
+        "outputs": [{
+            "internalType": "uint256[]",
+            "name": "result",
+            "type": "uint256[]"
+        }],
+        "stateMutability": "view",
+        "type": "function",
+        "constant": true
+    },
+    {
+        "inputs": [{
+                "internalType": "uint256",
+                "name": "_dadId",
+                "type": "uint256"
+            },
+            {
+                "internalType": "uint256",
+                "name": "_mumId",
+                "type": "uint256"
+            }
+        ],
+        "name": "breed",
+        "outputs": [{
+            "internalType": "uint256",
+            "name": "newDna",
+            "type": "uint256"
+        }],
+        "stateMutability": "nonpayable",
+        "type": "function"
     }
 ]

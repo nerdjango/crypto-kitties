@@ -271,14 +271,14 @@ function pattern1Color(color, code) {
     $('.r-mark').css('background', '#' + color)
 
     $('#decoration1Color').html('code: ' + code) //This updates text of the badge next to the slider
-    $('#dnadecorationMid').html(code) //This updates the body color part of the DNA that is displayed below the cat
+    $('#dnadecorationSides').html(code) //This updates the body color part of the DNA that is displayed below the cat
 }
 
 function pattern2Color(color, code) {
     $('.stomach-mark').css('background', '#' + color)
 
     $('#decoration2Color').html('code: ' + code) //This updates text of the badge next to the slider
-    $('#dnadecorationSides').html(code) //This updates the body color part of the DNA that is displayed below the cat
+    $('#dnadecorationMid').html(code) //This updates the body color part of the DNA that is displayed below the cat
 }
 
 async function animationVariation(num) {

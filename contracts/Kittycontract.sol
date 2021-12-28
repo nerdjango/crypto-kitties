@@ -49,24 +49,25 @@ contract KittyContract is IERC721, Ownable{
         return _tokenSymbol;
     }
 
-    function balanceOf(address owner) external view returns (uint256 balance){
+    function balanceOf(address owner) external view override returns (uint256 balance){
         balance = ownerToCatBalance[owner];
     }
 
-    function ownerOf(uint256 tokenId) external view tokenExists(tokenId) returns  (address owner){
+    function ownerOf(uint256 tokenId) external view override tokenExists(tokenId) returns  (address owner){
         owner = catTokenIdToOwner[tokenId];
     }
 
-    function safeTransferFrom(address from, address to, uint256 tokenId) external notZeroAddress(from) notZeroAddress(to) tokenExists(tokenId) {
+    function safeTransferFrom(address from, address to, uint256 tokenId) external override notZeroAddress(from) notZeroAddress(to) tokenExists(tokenId) {
         require(catTokenIdToOwner[tokenId]==from);
         if (msg.sender!=from) {
             require(approvedCatTokenIdToSpender[tokenId]==from);
         }else{
             require(_owns(msg.sender, tokenId));
         }
+        
+        _transfer(from, to, tokenId);
 
         if (_isContract(to)){
-            _transfer(from, to, tokenId);
 
             //call onERC721Recieved in the _to contract
             bytes4 result = IERC721Receiver(to).onERC721Received(
@@ -76,8 +77,6 @@ contract KittyContract is IERC721, Ownable{
                 bytes("")
             );
             require(result==ERC721_RECEIVED);
-        }else{
-            _transfer(from, to, tokenId);
         }
     }
 
@@ -85,30 +84,30 @@ contract KittyContract is IERC721, Ownable{
         address from,
         address to,
         uint256 tokenId
-    ) external notZeroAddress(from) notZeroAddress(to) tokenExists(tokenId) {
+    ) external override notZeroAddress(from) notZeroAddress(to) tokenExists(tokenId) {
         _transfer(from, to, tokenId);
     }
 
-    function approve(address to, uint256 tokenId) tokenExists(tokenId) external {
+    function approve(address to, uint256 tokenId) tokenExists(tokenId) external override {
         require(msg.sender==catTokenIdToOwner[tokenId]);
         approvedCatTokenIdToSpender[tokenId]=to;
         emit Approval(msg.sender, to, tokenId);
     }
 
-    function getApproved(uint256 tokenId) external view tokenExists(tokenId) returns (address operator){
+    function getApproved(uint256 tokenId) external view override tokenExists(tokenId) returns (address operator){
         operator = approvedCatTokenIdToSpender[tokenId];
     }
 
-    function setApprovalForAll(address operator, bool _approved) external{
+    function setApprovalForAll(address operator, bool _approved) external override {
         operatorApprovals[msg.sender][operator] = _approved;
         emit ApprovalForAll(msg.sender, operator, _approved);
     }
 
-    function isApprovedForAll(address owner, address operator) external view returns (bool){
+    function isApprovedForAll(address owner, address operator) external view override returns (bool){
         return operatorApprovals[owner][operator];
     }
 
-    function safeTransferFrom(address from, address to, uint256 tokenId, bytes calldata data) external notZeroAddress(from) notZeroAddress(to) tokenExists(tokenId) {
+    function safeTransferFrom(address from, address to, uint256 tokenId, bytes calldata data) external override notZeroAddress(from) notZeroAddress(to) tokenExists(tokenId) {
         require(catTokenIdToOwner[tokenId]==from);
         if (msg.sender!=from) {
             require(approvedCatTokenIdToSpender[tokenId]==from);
@@ -172,6 +171,7 @@ contract KittyContract is IERC721, Ownable{
 
     function supportsInterface(bytes4 _interfaceId)
         external
+        override
         view
         returns (bool)
     {
@@ -205,6 +205,8 @@ contract KittyContract is IERC721, Ownable{
         });
         catList.push(_kitty);
         uint newKittenId=catList.length-1;
+        catTokenIdToOwner[newKittenId]=_owner;
+        ownerToCatBalance[_owner]=ownerToCatBalance[_owner]+1;
         _transfer(address(0), _owner, newKittenId);
         emit Birth(_owner, newKittenId, _mumId, _dadId, _genes);
         return newKittenId;
@@ -225,6 +227,41 @@ contract KittyContract is IERC721, Ownable{
         dadId = uint(kitty.dadId);
         generation = uint(kitty.generation);
         owner = catTokenIdToOwner[tokenId];
+    }
+
+
+    function getCatByOwner() external view returns(uint[] memory result) {
+        result = new uint[](ownerToCatBalance[msg.sender]);
+        uint counter = 0;
+        for (uint i = 0; i < catList.length; i++) {
+            if (catTokenIdToOwner[i]==msg.sender) {
+                result[counter] = i;
+                counter++;
+            }
+        }
+        return result;
+    }
+
+    function breed(uint _dadId, uint _mumId) public  tokenExists(_dadId) tokenExists(_mumId) returns (uint newDna) {
+        require(catTokenIdToOwner[_dadId]==msg.sender);
+        require(catTokenIdToOwner[_mumId]==msg.sender);
+        uint dadDna = catList[_dadId].genes;
+        uint mumDna = catList[_mumId].genes;
+        newDna = _mixDna(dadDna, mumDna);
+        uint newGen = 0;
+        if (catList[_dadId].generation < catList[_mumId].generation) {
+            newGen=catList[_mumId].generation++;
+        }else{
+            newGen=catList[_dadId].generation++;
+        }
+        _createCat(mumDna, dadDna, newGen, newDna, msg.sender);
+    }
+
+    function _mixDna(uint _dadDna, uint _mumDna) internal pure returns (uint dna) {
+        uint firstPart = _dadDna/(10**8);
+        uint secondPart = _mumDna%(10**8);
+
+        dna = (firstPart*10**8)+secondPart;
     }
 
 }

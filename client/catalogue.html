@@ -1,0 +1,88 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nerdjango kitties </title>
+    <script type="text/javascript" src="assets/js/jquery-3.4.1.js"></script>
+    <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
+    <script src="assets/bootstrap/js/popper.js"></script>
+    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+    <script type="text/javascript" src="abi.js"></script>
+
+    <link rel="stylesheet" href="assets/css/mystyle.css">
+    <link rel="stylesheet" href="assets/css/cats.css">
+    <link rel="stylesheet" href="assets/css/colors.css">
+    <link rel="stylesheet" href="assets/css/factory.css">
+    <link rel="stylesheet" href="assets/css/frontend.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/animations.css">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="home.html">Nerdjango-Kitties</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="home.html">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="catalogue.html">Catalogue</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="index.html">K-Factory</a>
+                </li>
+            </ul>
+            <form class="form-inline my-2 my-lg-0">
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Start DApp</button>
+            </form>
+        </div>
+    </nav>
+    <div class="container p-5" style="margin-top: 0vh;margin-bottom: 10vh;">
+        <div align="center">
+            <h1 class="c-white">Catalogue</h1>
+            <p class="c-white">My kitties catalogue</p>
+        </div>
+        <div class="row">
+            <div class="col-lg-12 cattributes m-2 light-b-shadow">
+                <div class="row" id="catsDiv">
+
+                </div>
+            </div>
+
+        </div>
+        <br>
+
+    </div>
+
+
+
+    </div>
+    <footer align="left">
+        <p>Nerdjango Crypto Kitties Clone December 2021</p>
+    </footer>
+
+
+    <script>
+        // when page load create the catalog
+        $(document).ready(async function() {
+            setTimeout(() => {
+                getKitties()
+            }, 1000)
+        });
+    </script>
+
+</body>
+<script type="text/javascript" src="index.js"></script>
+<script src="assets/js/colors.js"></script>
+<script src="assets/js/catalogue/buildCat.js"></script>
+<script src="assets/js/catalogue/showCats.js"></script>
+<script src="assets/js/components.js"></script>
+
+</html>
