@@ -156,12 +156,12 @@ async function normalEyes(id) {
     await $('#rpupil' + id).css('left', '1px')
     await $('#lpupil' + id + ', #rpupil' + id).css({ "width": "13px", "height": "12px", "bottom": "0px", "transform": "rotate(0deg)" })
 
-    if (document.getElementById('lpupil').classList.contains("changed")) {
-        await $('#lpupil').toggleClass('changed');
-    }
-    if (document.getElementById('rpupil').classList.contains("changed")) {
-        await $('#rpupil').toggleClass('changed');
-    }
+    //if (document.getElementById('lpupil').classList.contains("changed")) {
+    //    await $('#lpupil').toggleClass('changed');
+    //}
+    //if (document.getElementById('rpupil').classList.contains("changed")) {
+    //    await $('#rpupil').toggleClass('changed');
+    //}
 }
 
 //top

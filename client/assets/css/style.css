@@ -540,3 +540,7 @@
     position: absolute;
     border-radius: 100% 100% 100% 100% / 70% 70% 100% 100%;
 }
+
+#catsDiv input[type=checkbox]:checked+.checkbox-alias {
+    border: 2px solid blue;
+}

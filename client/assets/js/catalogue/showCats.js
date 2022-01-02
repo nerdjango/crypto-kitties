@@ -55,6 +55,19 @@ function appendCat(dna, id, gen) {
     <span class="badge badge-light"><h4 class="tsp-2 m-0"><b>DNA:</b>` + dna + `</h4></span>`)
 }
 
+function appendCatForBreeding(dna, id, gen) {
+    //1 return DNA cat into readable string 
+    var KittyDna = catDna(dna)
+        //2 build the catBox into HTML
+    breedingCatBox(id)
+        //3 Render the cats CSS style depending on DNA string
+    renderCat(KittyDna, id)
+    $('#catDNA' + id).html(`
+    <span class="badge badge-light"><h4 class="tsp-2 m-0"><b>GEN:</b>` + gen + `</h4></span>
+    <br>
+    <span class="badge badge-light"><h4 class="tsp-2 m-0"><b>DNA:</b>` + dna + `</h4></span>`)
+}
+
 function readyToBreed() {
 
     var mumId = $('#DameId').val()
@@ -152,6 +165,24 @@ function catBox(id) {
                  <div class="featureBox catDiv ">
                  ` + catBody(id) + `                           
                  </div>
+                 <div class="dnaDiv" id="catDNA` + id + `"></div>
+                 ` + cattributes(id) + `
+                </div>`
+    var catView = $('#catview' + id)
+    if (!catView.length) {
+        $('#catsDiv').append(catDiv)
+    }
+}
+
+function breedingCatBox(id) {
+
+    var catDiv = `<div class="col-lg-4 pointer fit-content" id="catview` + id + `">
+    <input class="breed-checkbox" style="display: none;" type="checkbox" id="cat` + id + `" value="` + id + `">
+    <label class="checkbox-alias" for="cat` + id + `">
+                 <div class="featureBox catDiv ">
+                 ` + catBody(id) + `                           
+                 </div>
+                 </label>
                  <div class="dnaDiv" id="catDNA` + id + `"></div>
                  ` + cattributes(id) + `
                 </div>`

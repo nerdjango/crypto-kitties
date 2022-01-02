@@ -2,7 +2,7 @@ var web3 = new Web3(Web3.givenProvider);
 
 var instance;
 var user;
-var contractAddress = "0x5CA95cE8D8aFaE09e814500ba5A4f38b0B73E42E";
+var contractAddress = "0xcFB5122E154fC973402a2D53dAae5aF456bdB4f2";
 
 $(document).ready(async function() {
     await window.ethereum.request({ method: 'eth_requestAccounts' }).then(function(accounts) {
@@ -27,6 +27,17 @@ $(document).ready(async function() {
     })
 })
 
+$('#new-kitty').click(() => {
+    var catDNA = getDna()
+    instance.methods.createCatGen0(catDNA).send({}, function(err, txHash) {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log(txHash);
+        }
+    })
+})
+
 async function getKitties() {
 
     var arrayId;
@@ -38,9 +49,44 @@ async function getKitties() {
     }
     for (i = 0; i < arrayId.length; i++) {
         kitty = await instance.methods.getCat(arrayId[i]).call();
-        console.log(kitty)
         appendCat(kitty[0], i, kitty[4])
     }
     console.log(kitty);
 
 }
+
+async function getKittiesForBreeding() {
+
+    var arrayId;
+    var kitty;
+    try {
+        arrayId = await instance.methods.getCatByOwner().call();
+    } catch (err) {
+        console.log(err);
+    }
+    for (i = 0; i < arrayId.length; i++) {
+        kitty = await instance.methods.getCat(arrayId[i]).call();
+        appendCatForBreeding(kitty[0], i, kitty[4])
+    }
+    console.log(kitty);
+
+}
+
+function getCheckboxesValues() {
+    return [].slice.apply(document.querySelectorAll("input[type=checkbox]"))
+        .filter(function(c) { return c.checked; })
+        .map(function(c) { return c.value; });
+}
+
+$('#breedKitties').click(() => {
+    selectedCats = getCheckboxesValues()
+    tomcat = parseInt(selectedCats[0])
+    queen = parseInt(selectedCats[1])
+    instance.methods.breed(tomcat, queen).send({}, function(err, txHash) {
+        if (err) {
+            console.log(err);
+        } else {
+            location.reload();
+        }
+    })
+})
