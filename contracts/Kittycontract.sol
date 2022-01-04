@@ -150,9 +150,9 @@ contract KittyContract is IERC721, Ownable{
         catTokenIdToOwner[_tokenId] = _to;
 
         //update token counts
-        ownerToCatBalance[_to] = ownerToCatBalance[_to]++;
+        ownerToCatBalance[_to]++;
         if (_from != address(0)){
-            ownerToCatBalance[_from] = ownerToCatBalance[_from]--;
+            ownerToCatBalance[_from]--;
         }
 
         // emit Transfer event
@@ -206,7 +206,6 @@ contract KittyContract is IERC721, Ownable{
         catList.push(_kitty);
         uint newKittenId=catList.length-1;
         catTokenIdToOwner[newKittenId]=_owner;
-        ownerToCatBalance[_owner]=ownerToCatBalance[_owner]+1;
         _transfer(address(0), _owner, newKittenId);
         emit Birth(_owner, newKittenId, _mumId, _dadId, _genes);
         return newKittenId;
@@ -245,23 +244,60 @@ contract KittyContract is IERC721, Ownable{
     function breed(uint _dadId, uint _mumId) public  tokenExists(_dadId) tokenExists(_mumId) returns (uint newDna) {
         require(catTokenIdToOwner[_dadId]==msg.sender);
         require(catTokenIdToOwner[_mumId]==msg.sender);
-        uint dadDna = catList[_dadId].genes;
-        uint mumDna = catList[_mumId].genes;
+        ( uint256 dadDna,,,,uint256 DadGeneration, ) = getCat(_dadId);
+        ( uint256 mumDna,,,,uint256 MumGeneration,) = getCat(_mumId);
         newDna = _mixDna(dadDna, mumDna);
         uint newGen = 0;
-        if (catList[_dadId].generation < catList[_mumId].generation) {
-            newGen=catList[_mumId].generation++;
-        }else{
-            newGen=catList[_dadId].generation++;
+        if (DadGeneration < MumGeneration){
+            newGen = MumGeneration + 1;
+            newGen /= 2;
+        } else if (DadGeneration > MumGeneration){
+            newGen = DadGeneration + 1;
+            newGen /= 2;
+        } else{
+            newGen = MumGeneration + 1;
         }
         _createCat(mumDna, dadDna, newGen, newDna, msg.sender);
     }
 
-    function _mixDna(uint _dadDna, uint _mumDna) internal pure returns (uint dna) {
-        uint firstPart = _dadDna/(10**8);
-        uint secondPart = _mumDna%(10**8);
+    function _mixDna(uint _dadDna, uint _mumDna) internal view returns(uint) {
+        uint[8] memory geneArray;
+        uint8 random = uint8(block.timestamp % 255); // binary between 00000000 - 11111111
+        uint index = 7;
+        uint randomPos = uint8(block.timestamp % 8); // binary between 00000000 - 11111111
 
-        dna = (firstPart*10**8)+secondPart;
+        for (uint i=1; i<=128; i=i*2){
+            if (index == randomPos){
+                uint newFeature = block.timestamp % 99;
+                if (newFeature < 11){
+                    geneArray[index] = 11;
+                }else{
+                    geneArray[index] = newFeature;
+                }
+            }else{
+                if (random & i != 0){
+                    geneArray[index] = _dadDna % 100;
+                }else{
+                    geneArray[index] = _mumDna % 100;
+                }
+            }
+
+            _dadDna = _dadDna / 100;
+            _mumDna = _mumDna / 100;
+
+            if (index > 0){
+                index--;
+            }
+        }
+
+        uint dna;
+        for (uint i=0; i<8; i++){
+            dna = dna + geneArray[i];
+            if (i != 7){
+                dna = dna * 100;
+            }
+        }
+        return dna;
     }
 
 }

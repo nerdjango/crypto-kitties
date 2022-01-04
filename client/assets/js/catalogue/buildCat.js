@@ -79,6 +79,10 @@ function eyeVariation(num, id) {
             normalEyes(id)
             $('#eyeName' + id).html('Diagonal')
             return eyesType6(id)
+        default:
+            normalEyes(id)
+            $('#eyeName' + id).html('Basic')
+            break
     }
 }
 
@@ -115,6 +119,10 @@ function decorationVariation(num, id) {
             $('#decorationName' + id).html('Stomach & Right Face Mark')
             decorationType6(id)
             break
+        default:
+            $('#decorationName' + id).html('Basic')
+            normaldecoration(id)
+            break
     }
 }
 
@@ -145,6 +153,10 @@ function animationVariation(num, id) {
         case "6":
             $('#animationName' + id).html('Rear Paws Taping')
             animationType6(id)
+            break
+        default:
+            $('#animationName' + id).html('Head Moving')
+            animationType1(id)
             break
     }
 }

@@ -42,11 +42,12 @@ function selectBreed(dna, id, gen, gender) {
 
 //Append each Cat card as a catalog
 
-function appendCat(dna, id, gen) {
+async function appendCat(dna, id, gen) {
+    var isOnSale = await marketInstance.methods.isOnSale(id).call();
     //1 return DNA cat into readable string 
     var KittyDna = catDna(dna)
         //2 build the catBox into HTML
-    catBox(id)
+    catBox(id, isOnSale)
         //3 Render the cats CSS style depending on DNA string
     renderCat(KittyDna, id)
     $('#catDNA' + id).html(`
@@ -60,6 +61,22 @@ function appendCatForBreeding(dna, id, gen) {
     var KittyDna = catDna(dna)
         //2 build the catBox into HTML
     breedingCatBox(id)
+        //3 Render the cats CSS style depending on DNA string
+    renderCat(KittyDna, id)
+    $('#catDNA' + id).html(`
+    <span class="badge badge-light"><h4 class="tsp-2 m-0"><b>GEN:</b>` + gen + `</h4></span>
+    <br>
+    <span class="badge badge-light"><h4 class="tsp-2 m-0"><b>DNA:</b>` + dna + `</h4></span>`)
+}
+
+async function appendCatOffers(dna, id, gen) {
+    var offer = await marketInstance.methods.getOffer(id).call();
+    var cat = await instance.methods.getCat(id).call();
+    var catOwner = cat.owner
+        //1 return DNA cat into readable string 
+    var KittyDna = catDna(dna)
+        //2 build the catBox into HTML
+    offerCatBox(id, offer.price, catOwner)
         //3 Render the cats CSS style depending on DNA string
     renderCat(KittyDna, id)
     $('#catDNA' + id).html(`
@@ -159,15 +176,57 @@ var name = "Filip"
 var string = "hello " + name + "!"
 
 //Cat HTML Div for catalogue
-function catBox(id) {
+function catBox(id, isOnSale) {
+    var buttonText;
+    var buttonType;
+    var dataToggle;
 
+    if (isOnSale == true) {
+        buttonText = `Cancel Offer`
+        buttonType = "danger"
+        dataToggle = " "
+        dataOnclick = ` onclick="cancelSellOffer(this.value);" `
+    } else {
+        buttonText = `Add to marketplace`
+        buttonType = "primary"
+        dataToggle = ` data-toggle="modal" data-target="#sellModal` + id + `" `
+        dataOnclick = " "
+    }
     var catDiv = `<div class="col-lg-4 pointer fit-content" id="catview` + id + `">
                  <div class="featureBox catDiv ">
                  ` + catBody(id) + `                           
+                 <center><button type="button" value="` + id + `"  class="setOrRemoveOffer btn btn-` + buttonType + ` btn-sm"` + dataToggle + dataOnclick + `>` + buttonText + `</button></center>
                  </div>
                  <div class="dnaDiv" id="catDNA` + id + `"></div>
                  ` + cattributes(id) + `
-                </div>`
+                </div>
+
+                <div class="modal fade" id="sellModal` + id + `" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel">Create sell offer for kitty(` + id + `)</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                        <form class="form-inline">
+                            <div class="form-group mx-sm-4 mb-2">
+                                <input type="number" id="price` + id + `" class="form-control" placeholder="Enter Price in ETH" aria-label="Price" aria-describedby="basic-addon2">
+                                <div class="input-group-append">
+                                    <span class="input-group-text" id="basic-addon2">ETH</span>
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-primary mb-2" value="` + id + `" onclick="setSellOffer(this.value);">Confirm Offer</button>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                  </div>
+                </div>
+              </div>`
     var catView = $('#catview' + id)
     if (!catView.length) {
         $('#catsDiv').append(catDiv)
@@ -181,6 +240,28 @@ function breedingCatBox(id) {
     <label class="checkbox-alias" for="cat` + id + `">
                  <div class="featureBox catDiv ">
                  ` + catBody(id) + `                           
+                 </div>
+                 </label>
+                 <div class="dnaDiv" id="catDNA` + id + `"></div>
+                 ` + cattributes(id) + `
+                </div>`
+    var catView = $('#catview' + id)
+    if (!catView.length) {
+        $('#catsDiv').append(catDiv)
+    }
+}
+
+function offerCatBox(id, price, owner) {
+    var _price = web3.utils.fromWei(price, 'ether')
+    if (owner == instance.options.from) {
+        buttonText = `<button type="button" class="btn btn-sm btn-primary" disabled> On sale for ` + _price + ` ETH</button>`
+    } else {
+        buttonText = `<button type="button" value="` + id + `"  class="buyKitty btn btn-primary btn-sm" onclick="buyKitty(this.value);"> Buy @ ` + _price + ` ETH</button>`
+    }
+    var catDiv = `<div class="col-lg-4 pointer fit-content" id="catview` + id + `">
+                 <div class="featureBox catDiv ">
+                 ` + catBody(id) + ` 
+                 <center>` + buttonText + `</center>                          
                  </div>
                  </label>
                  <div class="dnaDiv" id="catDNA` + id + `"></div>

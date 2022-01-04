@@ -1,13 +1,16 @@
 var web3 = new Web3(Web3.givenProvider);
 
 var instance;
+var marketInstance;
 var user;
-var contractAddress = "0xcFB5122E154fC973402a2D53dAae5aF456bdB4f2";
+var contractAddress = "0xAF4d9A219bb1C07ff77ABa01b0A8b70789494126";
+var marketAddress = "0x9C1Ae83eE92a445699d52156aa78D801Cee2394e";
 
 $(document).ready(async function() {
     await window.ethereum.request({ method: 'eth_requestAccounts' }).then(function(accounts) {
 
-        instance = new web3.eth.Contract(abi, contractAddress, { from: accounts[0] })
+        instance = new web3.eth.Contract(abi.kittyContract, contractAddress, { from: accounts[0] })
+        marketInstance = new web3.eth.Contract(abi.marketplace, marketAddress, { from: accounts[0] })
         user = accounts[0]
 
         console.log(instance)
@@ -22,6 +25,16 @@ $(document).ready(async function() {
                 $("#kittenCreation").css("display", "block")
                 $("#kittenCreation").text("owner: " + owner + ", catId: " + kittenId + ", mumId: " + mumId +
                     ", dadId: " + dadId + ", genes: " + genes)
+            })
+            .on("error", console.error)
+
+        marketInstance.events.MarketTransaction().on("data", function(event) {
+                console.log(event)
+                let txType = event.returnValues.TxType
+                let owner = event.returnValues.owner
+                let kittenId = event.returnValues.tokenId
+                $("#kittenCreation").css("display", "block")
+                $("#kittenCreation").text("Transaction: " + txType + ", owner: " + owner + ", catId: " + kittenId)
             })
             .on("error", console.error)
     })
@@ -49,7 +62,7 @@ async function getKitties() {
     }
     for (i = 0; i < arrayId.length; i++) {
         kitty = await instance.methods.getCat(arrayId[i]).call();
-        appendCat(kitty[0], i, kitty[4])
+        appendCat(kitty[0], arrayId[i], kitty[4])
     }
     console.log(kitty);
 
@@ -66,7 +79,24 @@ async function getKittiesForBreeding() {
     }
     for (i = 0; i < arrayId.length; i++) {
         kitty = await instance.methods.getCat(arrayId[i]).call();
-        appendCatForBreeding(kitty[0], i, kitty[4])
+        appendCatForBreeding(kitty[0], arrayId[i], kitty[4])
+    }
+    console.log(kitty);
+
+}
+
+async function getOffers() {
+
+    var arrayId;
+    var kitty;
+    try {
+        arrayId = await marketInstance.methods.getAllTokenOnSale().call();
+    } catch (err) {
+        console.log(err);
+    }
+    for (i = 0; i < arrayId.length; i++) {
+        kitty = await instance.methods.getCat(arrayId[i]).call();
+        appendCatOffers(kitty[0], arrayId[i], kitty[4])
     }
     console.log(kitty);
 
@@ -90,3 +120,57 @@ $('#breedKitties').click(() => {
         }
     })
 })
+
+function setOffer(price, tokenId) {
+    marketInstance.methods.setOffer(price, tokenId).send({}, function(err, txHash) {
+        if (err) {
+            console.log(err);
+        } else {
+            location.reload();
+        }
+    })
+}
+
+async function setSellOffer(id) {
+    var priceId = `price` + id
+    var price = document.getElementById(priceId).value;
+    var weiValue = web3.utils.toWei(price, 'ether')
+    var _id = parseInt(id)
+    console.log(weiValue)
+    console.log(_id)
+
+    var isApprovedForAll = await instance.methods.isApprovedForAll(instance.options.from, marketAddress).call();
+
+    if (isApprovedForAll == false) {
+        instance.methods.setApprovalForAll(marketAddress, true).send({}, function(err, txHash) {
+            if (err) {
+                console.log(err);
+            } else {
+                setOffer(weiValue, _id);
+            }
+        })
+    } else {
+        setOffer(weiValue, _id);
+    }
+}
+
+async function cancelSellOffer(id) {
+    marketInstance.methods.removeOffer(id).send({}, function(err, txHash) {
+        if (err) {
+            console.log(err);
+        } else {
+            location.reload();
+        }
+    })
+}
+
+async function buyKitty(id) {
+    var offer = await marketInstance.methods.getOffer(id).call();
+    marketInstance.methods.buyKitty(id).send({ value: offer.price }, function(err, txHash) {
+        if (err) {
+            console.log(err);
+        } else {
+            location.reload();
+        }
+    })
+}
