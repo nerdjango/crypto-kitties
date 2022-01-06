@@ -10,11 +10,13 @@ contract KittyContract is IERC721, Ownable{
     mapping(address => uint) public ownerToCatBalance;
     mapping(uint => address) public catTokenIdToOwner;
     mapping(uint => address) public approvedCatTokenIdToSpender;
+    uint cooldownTime = 1 days;
     struct Cat {
         uint genes;
         uint64 birthTime;
         uint32 mumId;
         uint32 dadId;
+        uint32 readyTime;
         uint16 generation;
     }
     Cat[] public catList;
@@ -201,6 +203,7 @@ contract KittyContract is IERC721, Ownable{
             birthTime: uint64(block.timestamp),
             mumId: uint32(_mumId),
             dadId: uint32(_dadId),
+            readyTime: uint32(block.timestamp),
             generation: uint16(_generation)
         });
         catList.push(_kitty);
@@ -244,6 +247,8 @@ contract KittyContract is IERC721, Ownable{
     function breed(uint _dadId, uint _mumId) public  tokenExists(_dadId) tokenExists(_mumId) returns (uint newDna) {
         require(catTokenIdToOwner[_dadId]==msg.sender);
         require(catTokenIdToOwner[_mumId]==msg.sender);
+        require(catList[_dadId].readyTime<=uint32(block.timestamp), "Your dad kitty is only allowed to breed once every 24 hours");
+        require(catList[_mumId].readyTime<=uint32(block.timestamp), "Your mum kitty is only allowed to breed once every 24 hours");
         ( uint256 dadDna,,,,uint256 DadGeneration, ) = getCat(_dadId);
         ( uint256 mumDna,,,,uint256 MumGeneration,) = getCat(_mumId);
         newDna = _mixDna(dadDna, mumDna);
@@ -257,6 +262,8 @@ contract KittyContract is IERC721, Ownable{
         } else{
             newGen = MumGeneration + 1;
         }
+        catList[_dadId].readyTime=uint32(block.timestamp+cooldownTime);
+        catList[_mumId].readyTime=uint32(block.timestamp+cooldownTime);
         _createCat(mumDna, dadDna, newGen, newDna, msg.sender);
     }
 

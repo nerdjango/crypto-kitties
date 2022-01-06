@@ -181,6 +181,11 @@ var abi = {
                     "type": "uint32"
                 },
                 {
+                    "internalType": "uint32",
+                    "name": "readyTime",
+                    "type": "uint32"
+                },
+                {
                     "internalType": "uint16",
                     "name": "generation",
                     "type": "uint16"
