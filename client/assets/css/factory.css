@@ -14,7 +14,14 @@
 
 .dnaDiv {
     position: absolute;
-    left: -55px;
-    bottom: 48%;
+    left: -95px;
+    bottom: 45%;
+    transform: rotate(-90deg);
+}
+
+.dnaDiv1 {
+    position: absolute;
+    left: -95px;
+    bottom: 50%;
     transform: rotate(-90deg);
 }

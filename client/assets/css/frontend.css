@@ -59,13 +59,13 @@ footer {
 }
 
 .featureBox {
-    padding-left: 30px;
-    padding-right: 30px;
+    padding-left: 0px;
+    padding-right: 0px;
     padding-top: 10px;
     padding-bottom: 20px;
     border: 1px solid #ffc5c2;
     border-radius: 10px;
-    margin: 10px;
+    margin: 0px;
     transition: 0.8s ease-in-out;
 }
 

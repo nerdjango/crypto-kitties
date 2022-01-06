@@ -20,6 +20,8 @@
   },
   "homepage": "https://github.com/Ivan-on-Tech-Academy/academy-kitties-template#readme",
   "dependencies": {
-    "@openzeppelin/contracts": "^4.4.1"
+    "@openzeppelin/contracts": "^4.4.1",
+    "@truffle/hdwallet-provider": "^2.0.0",
+    "dotenv": "^10.0.0"
   }
 }

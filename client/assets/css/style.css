@@ -1,11 +1,12 @@
 .cat {
     background-color: transparent;
-    height: 335px;
-    width: 240px;
+    height: 340px;
+    width: 225px;
     position: relative;
     display: flex;
     justify-content: center;
     overflow: hidden;
+    margin: 0 auto;
 }
 
 .head {

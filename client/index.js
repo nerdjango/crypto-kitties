@@ -3,8 +3,8 @@ var web3 = new Web3(Web3.givenProvider);
 var instance;
 var marketInstance;
 var user;
-var contractAddress = "0xAF4d9A219bb1C07ff77ABa01b0A8b70789494126";
-var marketAddress = "0x9C1Ae83eE92a445699d52156aa78D801Cee2394e";
+var contractAddress = "0x3B26cf00bF72C9F01F263aD158bb9dE67292428c";
+var marketAddress = "0xC8C2140cbf1de9fBd5B058f091Dae8a026F3a1d0";
 
 $(document).ready(async function() {
     await window.ethereum.request({ method: 'eth_requestAccounts' }).then(function(accounts) {

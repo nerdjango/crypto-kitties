@@ -192,12 +192,12 @@ function catBox(id, isOnSale) {
         dataToggle = ` data-toggle="modal" data-target="#sellModal` + id + `" `
         dataOnclick = " "
     }
-    var catDiv = `<div class="col-lg-4 pointer fit-content" id="catview` + id + `">
+    var catDiv = `<div class="col-lg-4 pointer fit-content" style="padding-right: 5px; padding-left: 5px;" id="catview` + id + `">
                  <div class="featureBox catDiv ">
                  ` + catBody(id) + `                           
                  <center><button type="button" value="` + id + `"  class="setOrRemoveOffer btn btn-` + buttonType + ` btn-sm"` + dataToggle + dataOnclick + `>` + buttonText + `</button></center>
                  </div>
-                 <div class="dnaDiv" id="catDNA` + id + `"></div>
+                 <div class="dnaDiv1" id="catDNA` + id + `"></div>
                  ` + cattributes(id) + `
                 </div>
 
@@ -235,14 +235,14 @@ function catBox(id, isOnSale) {
 
 function breedingCatBox(id) {
 
-    var catDiv = `<div class="col-lg-4 pointer fit-content" id="catview` + id + `">
+    var catDiv = `<div class="col-lg-4 pointer fit-content" style="padding-right: 5px; padding-left: 5px;" id="catview` + id + `">
     <input class="breed-checkbox" style="display: none;" type="checkbox" id="cat` + id + `" value="` + id + `">
-    <label class="checkbox-alias" for="cat` + id + `">
+    <label class="checkbox-alias" style="width: 100%;" for="cat` + id + `">
                  <div class="featureBox catDiv ">
                  ` + catBody(id) + `                           
                  </div>
                  </label>
-                 <div class="dnaDiv" id="catDNA` + id + `"></div>
+                 <div class="dnaDiv1" id="catDNA` + id + `"></div>
                  ` + cattributes(id) + `
                 </div>`
     var catView = $('#catview' + id)
@@ -256,15 +256,15 @@ function offerCatBox(id, price, owner) {
     if (owner == instance.options.from) {
         buttonText = `<button type="button" class="btn btn-sm btn-primary" disabled> On sale for ` + _price + ` ETH</button>`
     } else {
-        buttonText = `<button type="button" value="` + id + `"  class="buyKitty btn btn-primary btn-sm" onclick="buyKitty(this.value);"> Buy @ ` + _price + ` ETH</button>`
+        buttonText = `<button type="button" style="padding-right: 5px; padding-left: 5px;" value="` + id + `"  class="buyKitty btn btn-primary btn-sm" onclick="buyKitty(this.value);"> Buy @ ` + _price + ` ETH</button>`
     }
-    var catDiv = `<div class="col-lg-4 pointer fit-content" id="catview` + id + `">
+    var catDiv = `<div class="col-lg-4 pointer fit-content" style="padding-right: 5px; padding-left: 5px;" id="catview` + id + `">
                  <div class="featureBox catDiv ">
                  ` + catBody(id) + ` 
                  <center>` + buttonText + `</center>                          
                  </div>
                  </label>
-                 <div class="dnaDiv" id="catDNA` + id + `"></div>
+                 <div class="dnaDiv1" id="catDNA` + id + `"></div>
                  ` + cattributes(id) + `
                 </div>`
     var catView = $('#catview' + id)
@@ -327,7 +327,7 @@ function catBody(id) {
 
 function cattributes(id) {
 
-    var Cattributes = `<ul class="ml-5 cattributes">
+    var Cattributes = `<ul class="ml-5 cattributes" style="margin-left: 1rem!important;">
                             <li><span id="eyeName` + id + `"></span> eyes</li>
                             <li><span id="decorationName` + id + `"></span> decoration</li>
                             <li><span id="animationName` + id + `"></span></li>
