@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
     <script src="assets/bootstrap/js/popper.js"></script>
     <script src="assets/bootstrap/js/bootstrap.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+    <script type="text/javascript" src="https://unpkg.com/web3@1.6.1/dist/web3.min.js"></script>
     <script type="text/javascript" src="abi.js"></script>
 
     <link rel="stylesheet" href="assets/css/mystyle.css">
@@ -42,6 +42,8 @@
                     <a class="nav-link" href="breed.html">Cattery</a>
                 </li>
             </ul>
+            <button type="button" id="btn-connect" class="btn btn-outline-success">Connect Wallet</button>
+            <button type="button" id="btn-disconnect" style="display: none;" class="btn btn-outline-danger">Disconnect Wallet</button>
         </div>
     </nav>
     <div class="container p-5" style="margin-top: 0vh;margin-bottom: 10vh;">
@@ -69,6 +71,8 @@
     </div>
     <footer class="blog-footer fixed-bottom" align="center">
         <p><a href="https://https://www.cryptokitties.co//">CryptoKitties</a> type fun project with &#10084; by <a href="https://twitter.com/nerdjango">@nerdjango</a>.</p>
+
+        <hr>
     </footer>
 
 
@@ -99,5 +103,18 @@
 <script src="assets/js/catalogue/buildCat.js"></script>
 <script src="assets/js/catalogue/showCats.js"></script>
 <script src="assets/js/components.js"></script>
+
+<!--
+  Use unpkg CDN to load all NPM packages to vanilla Javascript - read more at http://unpkg.com
+  On your deployment, you properly either want to use a preprocessing tool like webpack
+  to include these files, or extract NPM archives and manually host the files inside.
+  TODO: Pin down all versions.
+-->
+
+<script type="text/javascript" src="https://unpkg.com/web3modal@1.9.4/dist/index.js"></script>
+<script type="text/javascript" src="https://unpkg.com/evm-chains@0.2.0/dist/umd/index.min.js"></script>
+<script type="text/javascript" src="https://unpkg.com/@walletconnect/web3-provider@1.7.0/dist/umd/index.min.js"></script>
+
+<script type="text/javascript" src="connectionButton.js"></script>
 
 </html>

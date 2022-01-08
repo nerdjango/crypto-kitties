@@ -1,45 +1,3 @@
-var web3 = new Web3(Web3.givenProvider);
-
-var instance;
-var marketInstance;
-var user;
-var contractAddress = "0xaCed9780f71e88205b96aE2839746a7F3a946A63";
-var marketAddress = "0x1308BA5BB90E9778Ab520A6952E0f3420DF96Ec1";
-
-$(document).ready(async function() {
-    await window.ethereum.request({ method: 'eth_requestAccounts' }).then(function(accounts) {
-
-        instance = new web3.eth.Contract(abi.kittyContract, contractAddress, { from: accounts[0] })
-        marketInstance = new web3.eth.Contract(abi.marketplace, marketAddress, { from: accounts[0] })
-        user = accounts[0]
-
-        console.log(instance)
-
-        instance.events.Birth().on("data", function(event) {
-                console.log(event)
-                let owner = event.returnValues.owner
-                let kittenId = event.returnValues.kittenId
-                let mumId = event.returnValues.mumId
-                let dadId = event.returnValues.dadId
-                let genes = event.returnValues.genes
-                $("#kittenCreation").css("display", "block")
-                $("#kittenCreation").text("owner: " + owner + ", catId: " + kittenId + ", mumId: " + mumId +
-                    ", dadId: " + dadId + ", genes: " + genes)
-            })
-            .on("error", console.error)
-
-        marketInstance.events.MarketTransaction().on("data", function(event) {
-                console.log(event)
-                let txType = event.returnValues.TxType
-                let owner = event.returnValues.owner
-                let kittenId = event.returnValues.tokenId
-                $("#kittenCreation").css("display", "block")
-                $("#kittenCreation").text("Transaction: " + txType + ", owner: " + owner + ", catId: " + kittenId)
-            })
-            .on("error", console.error)
-    })
-})
-
 $('#new-kitty').click(() => {
     var catDNA = getDna()
     instance.methods.createCatGen0(catDNA).send({}, function(err, txHash) {
@@ -139,7 +97,7 @@ async function setSellOffer(id) {
     console.log(weiValue)
     console.log(_id)
 
-    var isApprovedForAll = await instance.methods.isApprovedForAll(instance.options.from, marketAddress).call();
+    var isApprovedForAll = await instance.methods.isApprovedForAll(user, marketAddress).call();
 
     if (isApprovedForAll == false) {
         instance.methods.setApprovalForAll(marketAddress, true).send({}, function(err, txHash) {
